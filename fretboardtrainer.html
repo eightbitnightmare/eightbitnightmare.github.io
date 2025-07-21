@@ -11,6 +11,11 @@
     <div class="trainer-container">
         <h1>🎸 Fretboard Trainer</h1>
         
+        <div class="dark-mode-control">
+            <input type="checkbox" id="dark-mode-toggle" name="dark-mode">
+            <label for="dark-mode-toggle">🌙 Dark Mode</label>
+        </div>
+
         <div class="controls">
             <div class="control-group">
                 <label for="bpm">BPM:</label>
@@ -33,10 +38,8 @@
             <label for="metronome-toggle">🔊 Metronome</label>
         </div>
 
-
-        <button id="start-stop-btn">Start</button>
-
         <div id="note-display">-</div>
+        <button id="start-stop-btn">Start</button>
     </div>
 
     <audio id="metronome-sound" src="metronome_01.mp3" preload="auto"></audio>
