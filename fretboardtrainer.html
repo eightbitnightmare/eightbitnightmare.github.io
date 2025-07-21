@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fretboard Trainer</title>
+    <link rel="stylesheet" href="fretboardtrainer_style.css">
+</head>
+<body>
+
+    <div class="trainer-container">
+        <h1>🎸 Fretboard Trainer</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="bpm">BPM:</label>
+                <input type="number" id="bpm" value="120" min="40" max="240">
+            </div>
+            
+            <div class="control-group">
+                <label for="key-select">Key:</label>
+                <select id="key-select"></select>
+            </div>
+
+            <div class="control-group">
+                <label for="scale-select">Scale:</label>
+                <select id="scale-select"></select>
+            </div>
+        </div>
+
+        <div class="metronome-control">
+            <input type="checkbox" id="metronome-toggle" name="metronome">
+            <label for="metronome-toggle">🔊 Metronome</label>
+        </div>
+
+
+        <button id="start-stop-btn">Start</button>
+
+        <div id="note-display">-</div>
+    </div>
+
+    <audio id="metronome-sound" src="metronome_01.mp3" preload="auto"></audio>
+
+    <script src="fretboardtrainer_script.js"></script>
+</body>
+</html>
