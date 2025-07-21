@@ -7,8 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const noteDisplay = document.getElementById('note-display');
     const metronomeToggle = document.getElementById('metronome-toggle');
     const metronomeSound = document.getElementById('metronome-sound');
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    const body = document.body;
 
     // --- Musical Data ---
     const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -95,10 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             startTraining();
         }
-    });
-
-    darkModeToggle.addEventListener('change', () => {
-        body.classList.toggle('dark-mode');
     });
 
     // --- Initial Setup ---
