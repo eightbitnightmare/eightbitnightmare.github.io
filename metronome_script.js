@@ -5,7 +5,7 @@ const beatTogglesContainer = document.getElementById('beatToggles');
 const highClick = document.getElementById('highClick');
 const lowClick = document.getElementById('lowClick');
 
-let bpm = 120;
+let bpm = 80;
 let beatsPerBar = 4;
 let enabledBeats = [true, true, true, true]; // State for each beat
 let isPlaying = false;
