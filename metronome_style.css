@@ -15,6 +15,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
+    width: 90%;
+    max-width: 500px;
 }
 
 .controls {
@@ -22,6 +24,7 @@ body {
     gap: 20px;
     margin-bottom: 20px;
     justify-content: center;
+    align-items: flex-end;
 }
 
 .bpm-control label,
@@ -56,22 +59,37 @@ body {
     background-color: #1565c0;
 }
 
-.visualizer {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #444;
-    margin: 20px auto;
-    opacity: 0.5;
-    transition: background-color 0.1s ease, opacity 0.1s ease;
+.beat-toggles {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 25px;
+    margin-bottom: 20px;
 }
 
-.visualizer.active-first {
-    background-color: #0d47a1;
-    opacity: 1;
+.beat-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.1s;
+    border: 2px solid transparent;
 }
 
-.visualizer.active {
-    background-color: #777;
-    opacity: 1;
+.beat-toggle.first-beat {
+    background-color: #0d47a1; /* Primary color */
+}
+
+.beat-toggle.other-beat {
+    background-color: #555;
+}
+
+.beat-toggle.disabled {
+    background-color: #333;
+    border-color: #444;
+}
+
+.beat-toggle.active {
+    border-color: #FFFFFF; /* White border for active beat */
+    transform: scale(1.1);
 }
