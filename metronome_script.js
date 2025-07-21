@@ -1,33 +1,66 @@
 const bpmInput = document.getElementById('bpm');
 const beatsSelect = document.getElementById('beats');
 const startStopButton = document.getElementById('startStop');
-const visualizer = document.querySelector('.visualizer');
+const beatTogglesContainer = document.getElementById('beatToggles');
 const highClick = document.getElementById('highClick');
 const lowClick = document.getElementById('lowClick');
 
-let bpm = parseInt(bpmInput.value);
-let beatsPerBar = parseInt(beatsSelect.value);
+let bpm = 120;
+let beatsPerBar = 4;
+let enabledBeats = [true, true, true, true]; // State for each beat
 let isPlaying = false;
-let intervalId;
+let intervalId = null;
 let beatCount = 0;
+let previousActiveToggle = null;
+
+function renderBeatToggles() {
+    beatTogglesContainer.innerHTML = ''; // Clear existing toggles
+    for (let i = 0; i < beatsPerBar; i++) {
+        const toggle = document.createElement('div');
+        toggle.classList.add('beat-toggle');
+        toggle.classList.add(i === 0 ? 'first-beat' : 'other-beat');
+        if (!enabledBeats[i]) {
+            toggle.classList.add('disabled');
+        }
+        toggle.dataset.index = i;
+        
+        toggle.addEventListener('click', () => {
+            const index = parseInt(toggle.dataset.index);
+            enabledBeats[index] = !enabledBeats[index];
+            toggle.classList.toggle('disabled');
+        });
+        
+        beatTogglesContainer.appendChild(toggle);
+    }
+}
 
 function playClick() {
-    if (beatCount % beatsPerBar === 0) {
-        highClick.currentTime = 0;
-        highClick.play();
-        visualizer.className = 'visualizer active-first';
-    } else {
-        lowClick.currentTime = 0;
-        lowClick.play();
-        visualizer.className = 'visualizer active';
+    const currentBeatIndex = beatCount % beatsPerBar;
+    
+    // De-activate previous toggle
+    if (previousActiveToggle) {
+        previousActiveToggle.classList.remove('active');
     }
-    setTimeout(() => {
-        visualizer.className = 'visualizer';
-    }, 100);
+
+    const currentToggle = beatTogglesContainer.children[currentBeatIndex];
+    currentToggle.classList.add('active');
+    previousActiveToggle = currentToggle;
+    
+    if (enabledBeats[currentBeatIndex]) {
+        if (currentBeatIndex === 0) {
+            highClick.currentTime = 0;
+            highClick.play();
+        } else {
+            lowClick.currentTime = 0;
+            lowClick.play();
+        }
+    }
+    
     beatCount++;
 }
 
 function startMetronome() {
+    bpm = parseInt(bpmInput.value);
     if (!intervalId) {
         const interval = 60000 / bpm;
         intervalId = setInterval(playClick, interval);
@@ -42,7 +75,10 @@ function stopMetronome() {
     isPlaying = false;
     startStopButton.textContent = 'Start';
     beatCount = 0;
-    visualizer.className = 'visualizer';
+    if (previousActiveToggle) {
+        previousActiveToggle.classList.remove('active');
+        previousActiveToggle = null;
+    }
 }
 
 startStopButton.addEventListener('click', () => {
@@ -54,7 +90,6 @@ startStopButton.addEventListener('click', () => {
 });
 
 bpmInput.addEventListener('input', () => {
-    bpm = parseInt(bpmInput.value);
     if (isPlaying) {
         stopMetronome();
         startMetronome();
@@ -63,5 +98,11 @@ bpmInput.addEventListener('input', () => {
 
 beatsSelect.addEventListener('change', () => {
     beatsPerBar = parseInt(beatsSelect.value);
-    beatCount = 0; // Reset beat count on time signature change
+    // Reset enabledBeats array for the new time signature
+    enabledBeats = Array(beatsPerBar).fill(true);
+    if (isPlaying) stopMetronome();
+    renderBeatToggles();
 });
+
+// Initial render
+renderBeatToggles();
