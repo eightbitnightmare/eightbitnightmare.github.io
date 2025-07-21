@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const noteDisplay = document.getElementById('note-display');
     const metronomeToggle = document.getElementById('metronome-toggle');
     const metronomeSound = document.getElementById('metronome-sound');
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const body = document.body;
 
     // --- Musical Data ---
     const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -23,9 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Functions ---
 
-    /**
-     * Populates the dropdown select elements with keys and scales.
-     */
     function populateSelectors() {
         NOTES.forEach(note => {
             const option = new Option(note, note);
@@ -38,9 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Generates the notes for the selected key and scale.
-     */
     function generateScaleNotes() {
         const rootNote = keySelect.value;
         const scaleName = scaleSelect.value;
@@ -52,32 +48,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Picks a random note from the current scale and displays it.
-     */
     function updateNote() {
         if (currentScaleNotes.length === 0) return;
         const randomIndex = Math.floor(Math.random() * currentScaleNotes.length);
         noteDisplay.textContent = currentScaleNotes[randomIndex];
     }
-    
-    /**
-     * Executes on every beat of the metronome.
-     */
+
     function tick() {
-        // Play metronome sound if toggled on
         if (metronomeToggle.checked) {
             metronomeSound.currentTime = 0;
             metronomeSound.play().catch(error => console.error("Audio play failed:", error));
         }
-        // Update the displayed note
         updateNote();
     }
 
-
-    /**
-     * Starts the training session.
-     */
     function startTraining() {
         const bpm = parseInt(bpmInput.value, 10);
         if (isNaN(bpm) || bpm < 40) {
@@ -86,28 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const intervalMilliseconds = (60 / bpm) * 1000;
-        
         generateScaleNotes();
-        
-        // Start the first beat immediately, then set the interval for subsequent beats.
         tick(); 
         trainingInterval = setInterval(tick, intervalMilliseconds);
-
         startStopBtn.textContent = 'Stop';
         startStopBtn.classList.add('active');
     }
 
-    /**
-     * Stops the training session.
-     */
     function stopTraining() {
         clearInterval(trainingInterval);
         trainingInterval = null;
-        
-        // Stop and reset the metronome sound
         metronomeSound.pause();
         metronomeSound.currentTime = 0;
-
         noteDisplay.textContent = '-';
         startStopBtn.textContent = 'Start';
         startStopBtn.classList.remove('active');
@@ -121,6 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             startTraining();
         }
+    });
+
+    darkModeToggle.addEventListener('change', () => {
+        body.classList.toggle('dark-mode');
     });
 
     // --- Initial Setup ---
