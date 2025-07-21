@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startTraining() {
         const bpm = parseInt(bpmInput.value, 10);
-        if (isNaN(bpm) || bpm < 40) {
-            alert("Please enter a valid BPM (40 or higher).");
+        if (isNaN(bpm) || bpm < 20) {
+            alert("Please enter a valid BPM (20 or higher).");
             return;
         }
 
